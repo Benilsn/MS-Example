@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  email_sender_app:
+    container_name: email_sender_app
+    image: email_sender
+    ports:
+      - "8080:8080"
+    networks:
+      email_sender:
+        ipv4_address: 172.21.0.30
+    links:
+      - email_sender_db:database
+
+  email_sender_db:
+    container_name: email_sender_db
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: coachme
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      email_sender:
+        ipv4_address: 172.21.0.20
+
+  user_db:
+    container_name: user_db
+    image: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: coachme
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/user_db
+    volumes:
+      - user_db:/data/user_db
+    networks:
+      user:
+        ipv4_address: 172.22.0.2
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - email_sender
+      - user
+    restart: unless-stopped
+
+networks:
+  email_sender:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.21.0.1/21"
+  user:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.22.0.1/22"
+
+volumes:
+  pgadmin:
+  postgres:
+  user_db:
