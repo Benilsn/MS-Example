@@ -2,11 +2,12 @@ package br.com.coachme.models;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "tb_elos")
-public class Elo {
+public class Elo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

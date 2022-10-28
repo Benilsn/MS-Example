@@ -17,6 +17,7 @@ public class EmailSender {
     {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
+//        mailSender.setPort(1025);
         mailSender.setPort(25);
 
         mailSender.setUsername("lolcoachofficial@gmail.com");

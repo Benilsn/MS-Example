@@ -1,13 +1,15 @@
 package br.com.coachme.models;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "tb_users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,12 +34,12 @@ public class User {
     @Column(name = "average_rating", precision = 1)
     private Float average_rating;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Role.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Role.class)
     private Role role;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Position.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Position.class)
     private Position position;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Elo.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Elo.class)
     private Elo elo;
 }

@@ -7,40 +7,46 @@ services:
     ports:
       - "8080:8080"
     networks:
-      email_sender:
+      coachme:
         ipv4_address: 172.21.0.30
-    links:
-      - email_sender_db:database
+    depends_on:
+      - coachme_db
 
-  email_sender_db:
-    container_name: email_sender_db
+#  mailCatcher:
+#    container_name: mail_catcher
+#    image: dockage/mailcatcher
+#    ports:
+#      - "1080:1080"
+#      - "1025:1025"
+#    networks:
+#      coachme:
+#        ipv4_address: 172.21.0.31
+
+  user_app:
+    container_name: user_app
+    image: user_ms
+    ports:
+      - "8181:8181"
+    networks:
+      coachme:
+        ipv4_address: 172.21.0.32
+    depends_on:
+      - coachme_db
+
+  coachme_db:
+    container_name: coachme_db
     image: postgres
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: coachme
       POSTGRES_PASSWORD: root
-      PGDATA: /data/postgres
+      PGDATA: /data/coachme_db
     volumes:
-      - postgres:/data/postgres
+      - coachme_db:/data/coachme_db
     networks:
-      email_sender:
+      coachme:
         ipv4_address: 172.21.0.20
-
-  user_db:
-    container_name: user_db
-    image: postgres
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_USER: coachme
-      POSTGRES_PASSWORD: root
-      PGDATA: /data/user_db
-    volumes:
-      - user_db:/data/user_db
-    networks:
-      user:
-        ipv4_address: 172.22.0.2
 
   pgadmin:
     container_name: pgadmin
@@ -54,12 +60,11 @@ services:
     ports:
       - "5050:80"
     networks:
-      - email_sender
-      - user
+      - coachme
     restart: unless-stopped
 
 networks:
-  email_sender:
+  coachme:
     ipam:
       driver: default
       config:
@@ -72,5 +77,4 @@ networks:
 
 volumes:
   pgadmin:
-  postgres:
-  user_db:
+  coachme_db:
