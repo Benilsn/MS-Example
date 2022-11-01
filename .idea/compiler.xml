@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="user" />
         <module name="email_sender" />
+        <module name="mentorship" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -8,9 +8,11 @@
     <artifactId>coachme</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>email_sender</module>
         <module>user</module>
+        <module>mentorship</module>
     </modules>
 
     <name>coachme</name>

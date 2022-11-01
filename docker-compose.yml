@@ -3,7 +3,7 @@ version: '3'
 services:
   email_sender_app:
     container_name: email_sender_app
-    image: email_sender
+    image: reykon/email_sender:1
     ports:
       - "8080:8080"
     networks:
@@ -12,26 +12,38 @@ services:
     depends_on:
       - coachme_db
 
-#  mailCatcher:
-#    container_name: mail_catcher
-#    image: dockage/mailcatcher
-#    ports:
-#      - "1080:1080"
-#      - "1025:1025"
-#    networks:
-#      coachme:
-#        ipv4_address: 172.21.0.31
+  #  mailCatcher:
+  #    container_name: mail_catcher
+  #    image: dockage/mailcatcher
+  #    ports:
+  #      - "1080:1080"
+  #      - "1025:1025"
+  #    networks:
+  #      coachme:
+  #        ipv4_address: 172.21.0.31
 
   user_app:
     container_name: user_app
-    image: user_ms
+    image: reykon/user_ms:1
     ports:
       - "8181:8181"
+    networks:
+      coachme:
+        ipv4_address: 172.21.0.31
+    depends_on:
+      - coachme_db
+
+  mentorship_app:
+    container_name: mentorship_app
+    image: reykon/mentorship_ms:1
+    ports:
+      - "8282:8282"
     networks:
       coachme:
         ipv4_address: 172.21.0.32
     depends_on:
       - coachme_db
+      - user_app
 
   coachme_db:
     container_name: coachme_db

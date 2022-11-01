@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -56,13 +55,11 @@ public class UserController {
     try {
         return new ResponseEntity<>(userService.updateUser(email, userDto), HttpStatus.OK);
 
-    }catch (UserNotFoundException e){
+    } catch (UserNotFoundException e){
 
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     }
-
-
 
 }
